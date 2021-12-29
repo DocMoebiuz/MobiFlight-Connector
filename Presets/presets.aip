@@ -409,7 +409,7 @@
   </config>
   <config>
     <active>true</active>
-    <description>Radios - COM Freq</description>
+    <description>Radios - COM1 Freq</description>
     <settings msdata:InstanceType="MobiFlight.OutputConfigItem, MFConnector, Version=7.7.0.0, Culture=neutral, PublicKeyToken=null" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
       <source type="FSUIPC" offset="0x034E" offsetType="Integer" size="2" mask="0xFFFF" bcdMode="TRUE" />
       <comparison active="False" value="" operand="=" ifValue="" elseValue="" />
