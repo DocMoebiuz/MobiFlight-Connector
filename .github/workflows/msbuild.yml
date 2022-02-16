@@ -35,10 +35,10 @@ jobs:
       working-directory: ${{env.GITHUB_WORKSPACE}}
       # Add additional options to the MSBuild command line here (like platform or verbosity level).
       # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
-      run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:Platform=${{env.BUILD_PLATFORM}} ${{env.SOLUTION_FILE_PATH}} /t:${{env.PROJECT_TEST}}
+      run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:Platform=${{env.BUILD_PLATFORM}} /t:${{env.PROJECT_TEST}} ${{env.SOLUTION_FILE_PATH}}
       
     - name: Run Tests
-      run: vstest.console.exe ${{env.GITHUB_WORKSPACE}}\${{env.PROJECT_TEST}}\bin\Release\${{env.PROJECT_TEST}}.dll
+      run: vstest.console.exe ${{env.PROJECT_TEST}}/bin/Release/${{env.PROJECT_TEST}}.dll
 
     - name: Build Connector
       working-directory: ${{env.GITHUB_WORKSPACE}}
