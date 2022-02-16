@@ -34,3 +34,9 @@ jobs:
       
     - name: Run Tests
       run: vstest.console.exe ${{env.GITHUB_WORKSPACE}}\MobiFlightUnitTests\bin\Release\MobiFlightUnitTests.dll
+      
+    - name: Archive code coverage results
+      uses: actions/upload-artifact@v2
+      with:
+        name: MobiFlightConnector-9.2.0.5.zip
+        path: Release/MobiFlightConnector-9.2.0.5.zip
