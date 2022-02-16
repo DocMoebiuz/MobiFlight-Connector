@@ -11,6 +11,8 @@ env:
   # https://docs.github.com/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
   BUILD_CONFIGURATION: Release
   BUILD_PLATFORM: x86
+  PROJECT_TEST: MobiFlightUnitTests
+  PROJECT_MAIN: MobiFlightConnector
 
 jobs:
   build:
@@ -21,22 +23,31 @@ jobs:
 
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v1.0.2
+      
+    - name: Add VSTest to Path
+      uses: darenm/Setup-VSTest@v1
 
     - name: Restore NuGet packages
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: nuget restore ${{env.SOLUTION_FILE_PATH}}
-
-    - name: Build
+      
+    - name: Build Test
       working-directory: ${{env.GITHUB_WORKSPACE}}
       # Add additional options to the MSBuild command line here (like platform or verbosity level).
       # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
-      run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:Platform=${{env.BUILD_PLATFORM}} ${{env.SOLUTION_FILE_PATH}} /t:MobiFlightConnector
+      run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:Platform=${{env.BUILD_PLATFORM}} ${{env.SOLUTION_FILE_PATH}} /t:${{env.PROJECT_TEST}}
       
     - name: Run Tests
-      run: vstest.console.exe ${{env.GITHUB_WORKSPACE}}\MobiFlightUnitTests\bin\Release\MobiFlightUnitTests.dll
+      run: vstest.console.exe ${{env.GITHUB_WORKSPACE}}\${{env.PROJECT_TEST}}\bin\Release\${{env.PROJECT_TEST}}.dll
+
+    - name: Build Connector
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      # Add additional options to the MSBuild command line here (like platform or verbosity level).
+      # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
+      run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:Platform=${{env.BUILD_PLATFORM}} ${{env.SOLUTION_FILE_PATH}} /t:${{env.PROJECT_MAIN}}
       
     - name: Archive code coverage results
       uses: actions/upload-artifact@v2
       with:
-        name: MobiFlightConnector-9.2.0.5.zip
-        path: Release/MobiFlightConnector-9.2.0.5.zip
+        name: MobiFlightConnector
+        path: Release/*.zip
