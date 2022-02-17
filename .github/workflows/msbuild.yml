@@ -15,7 +15,7 @@ env:
   PROJECT_MAIN: MobiFlightConnector
 
 jobs:
-  build:
+  test:
     runs-on: windows-latest
 
     steps:
@@ -39,6 +39,23 @@ jobs:
       
     - name: Run Tests
       run: vstest.console.exe ${{env.PROJECT_TEST}}/bin/Release/${{env.PROJECT_TEST}}.dll
+
+    
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Add MSBuild to PATH
+      uses: microsoft/setup-msbuild@v1.0.2
+      
+    - name: Add VSTest to Path
+      uses: darenm/Setup-VSTest@v1
+
+    - name: Restore NuGet packages
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      run: nuget restore ${{env.SOLUTION_FILE_PATH}}
 
     - name: Build Connector
       working-directory: ${{env.GITHUB_WORKSPACE}}
