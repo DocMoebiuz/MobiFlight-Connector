@@ -1,4 +1,4 @@
-name: RunTests
+name: Unit Tests
 
 on: [push]
 
