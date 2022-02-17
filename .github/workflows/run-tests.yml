@@ -14,7 +14,7 @@ env:
   BUILD_PROJECT: MobiFlightUnitTests
 
 jobs:
-  build:
+  test:
     runs-on: windows-latest
 
     steps:
