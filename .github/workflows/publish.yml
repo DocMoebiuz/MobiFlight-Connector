@@ -28,16 +28,9 @@ jobs:
       
     - name: Add VSTest to Path
       uses: darenm/Setup-VSTest@v1
-      
-    - name: Replace Assembly Version
-      uses: mingjun97/file-regex-replace@v1
-      with:
-        regex: '\d+\.\d+\d+(\.\d)?'
-        replacement: ${{ github.event.release.tag_name }}
-        include: Properties/AssemblyInfo.cs
     
     - name: Dump AssemblyInfo.cs
-      run: Get-Content -path "Properties/AssemblyInfo.cs" | % { $_ -Replace '"\d+\.\d+\d+(\.\d)?"', '${{ github.event.release.tag_name }}' } |  Out-File "Properties/AssemblyInfo.cs"
+      run: (Get-Content "Properties/AssemblyInfo.cs") -replace '\("\d+\.\d+\.\d+(\.\d+)?"\)', '("${{ github.event.release.tag_name }}")' | Out-File "Properties/AssemblyInfo.cs"
       shell: pwsh
       
     - name: Dump AssemblyInfo.cs
