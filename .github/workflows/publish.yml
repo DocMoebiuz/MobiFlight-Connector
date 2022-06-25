@@ -28,24 +28,22 @@ jobs:
       
     - name: Add VSTest to Path
       uses: darenm/Setup-VSTest@v1
-
-    - name: Restore NuGet packages
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      run: nuget restore ${{env.SOLUTION_FILE_PATH}}
-   
+      
     - name: Replace Assembly Version
       uses: mingjun97/file-regex-replace@v1
       with:
         regex: '\d+\.\d+\d+(\.\d)?'
         replacement: ${{ github.event.release.tag_name }}
-        include: './Properties/AssemblyInfo.cs'
+        include: Properties/AssemblyInfo.cs
         
     - name: Dump AssemblyInfo.cs
-      uses: Amadevus/pwsh-script@v2
-      id: my-script
-      with:
-        script: 'type ./Properties/AssemblyInfo.cs'
-        
+      run: 'type Properties/AssemblyInfo.cs'
+      shell: pwsh
+
+    - name: Restore NuGet packages
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      run: nuget restore ${{env.SOLUTION_FILE_PATH}}
+ 
     - name: Build Test
       working-directory: ${{env.GITHUB_WORKSPACE}}
       # Add additional options to the MSBuild command line here (like platform or verbosity level).
