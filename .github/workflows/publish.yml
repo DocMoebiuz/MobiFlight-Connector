@@ -33,6 +33,15 @@ jobs:
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: nuget restore ${{env.SOLUTION_FILE_PATH}}
       
+    - name: Set build number
+      id: setversion
+      uses: berglie/assembly-version/set-buildnumber@v1
+      with:
+        filename: 'AssemblyInfo.cs'
+        directory: './Properties/'
+        buildnumber: ${{ env.RELEASE_VERSION }}		
+        recursive: false
+      
     - name: Build Test
       working-directory: ${{env.GITHUB_WORKSPACE}}
       # Add additional options to the MSBuild command line here (like platform or verbosity level).
