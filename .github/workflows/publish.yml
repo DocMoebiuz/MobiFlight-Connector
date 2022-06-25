@@ -34,13 +34,12 @@ jobs:
       run: nuget restore ${{env.SOLUTION_FILE_PATH}}
    
     - name: Replace Assembly Version
-      uses: jacobtomlinson/gha-find-replace@v2
+      uses: mingjun97/file-regex-replace@v1
       with:
-        find: "\\d+\\.\\d+\\d+(\\.\\d)?"
-        replace: ${{ github.event.release.tag_name }}
+        regex: "\\d+\\.\\d+\\d+(\\.\\d)?"
+        replacement: ${{ github.event.release.tag_name }}
         include: "Properties/AssemblyInfo.cs"
-        regex: true
-  
+        
     - name: Build Test
       working-directory: ${{env.GITHUB_WORKSPACE}}
       # Add additional options to the MSBuild command line here (like platform or verbosity level).
