@@ -32,16 +32,15 @@ jobs:
     - name: Restore NuGet packages
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: nuget restore ${{env.SOLUTION_FILE_PATH}}
-      
-    - name: Set build number
-      id: setversion
-      uses: berglie/assembly-version/set-buildnumber@v1
+   
+    - name: Replace Assembly Version
+      uses: jacobtomlinson/gha-find-replace@v2
       with:
-        filename: 'AssemblyInfo.cs'
-        directory: './Properties/'
-        buildnumber: ${{ github.event.release.tag_name }}
-        recursive: false
-      
+        find: "\\d+\\.\\d+\\d+(\\.\\d)?"
+        replace: ${{ github.event.release.tag_name }}
+        include: "Properties/AssemblyInfo.cs"
+        regex: true
+  
     - name: Build Test
       working-directory: ${{env.GITHUB_WORKSPACE}}
       # Add additional options to the MSBuild command line here (like platform or verbosity level).
