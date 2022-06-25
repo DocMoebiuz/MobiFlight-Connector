@@ -36,9 +36,15 @@ jobs:
     - name: Replace Assembly Version
       uses: mingjun97/file-regex-replace@v1
       with:
-        regex: "\\d+\\.\\d+\\d+(\\.\\d)?"
+        regex: '\d+\.\d+\d+(\.\d)?'
         replacement: ${{ github.event.release.tag_name }}
-        include: "Properties/AssemblyInfo.cs"
+        include: './Properties/AssemblyInfo.cs'
+        
+    - name: Dump AssemblyInfo.cs
+      uses: Amadevus/pwsh-script@v2
+      id: my-script
+      with:
+        script: 'type ./Properties/AssemblyInfo.cs'
         
     - name: Build Test
       working-directory: ${{env.GITHUB_WORKSPACE}}
