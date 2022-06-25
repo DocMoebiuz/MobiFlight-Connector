@@ -39,7 +39,7 @@ jobs:
       with:
         filename: 'AssemblyInfo.cs'
         directory: './Properties/'
-        buildnumber: ${{ env.RELEASE_VERSION }}		
+        buildnumber: ${{ github.event.release.tag_name }}
         recursive: false
       
     - name: Build Test
