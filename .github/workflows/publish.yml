@@ -35,7 +35,11 @@ jobs:
         regex: '\d+\.\d+\d+(\.\d)?'
         replacement: ${{ github.event.release.tag_name }}
         include: Properties/AssemblyInfo.cs
-        
+    
+    - name: Dump AssemblyInfo.cs
+      run: Get-Content -path "Properties/AssemblyInfo.cs" | % { $_ -Replace '"\d+\.\d+\d+(\.\d)?"', '${{ github.event.release.tag_name }}' } |  Out-File "Properties/AssemblyInfo.cs"
+      shell: pwsh
+      
     - name: Dump AssemblyInfo.cs
       run: 'type Properties/AssemblyInfo.cs'
       shell: pwsh
