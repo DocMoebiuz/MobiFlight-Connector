@@ -62,3 +62,14 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         files: Release/*.zip
+        
+    - uses: MCJack123/ghaction-generate-release-hashes@v3
+      with:
+        hash-type: sha1
+        file-name: hashes.txt
+        
+    - uses: actions/upload-artifact@v2
+      with:
+        name: Asset Hashes
+        path: hashes.txt
+
