@@ -67,6 +67,7 @@ jobs:
       with:
         hash-type: sha1
         file-name: hashes.txt
+        get-assets: true
         
     - uses: actions/upload-artifact@v2
       with:
