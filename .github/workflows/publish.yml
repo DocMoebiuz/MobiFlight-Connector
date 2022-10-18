@@ -57,7 +57,7 @@ jobs:
       run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:Platform=${{env.BUILD_PLATFORM}} ${{env.SOLUTION_FILE_PATH}} /t:${{env.PROJECT_MAIN}}
       
     - name: Create Hash
-      run: (Get-FileHash Release/MobiFlightConnector-${{ github.event.release.tag_name }}.zip -Algorithm SHA1).Hash | Out-File MobiFlightConnector-${{ github.event.release.tag_name }}.sha1 
+      run: (Get-FileHash Release/MobiFlightConnector-${{ github.event.release.tag_name }}.zip -Algorithm SHA1).Hash | Out-File Release/MobiFlightConnector-${{ github.event.release.tag_name }}.sha1 
       shell: pwsh
       
     - name: Release
@@ -65,7 +65,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        files: 
+        files: |
           Release/*.zip
           Release/*.sha1
         
