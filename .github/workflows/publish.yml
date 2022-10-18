@@ -55,22 +55,21 @@ jobs:
       # Add additional options to the MSBuild command line here (like platform or verbosity level).
       # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
       run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:Platform=${{env.BUILD_PLATFORM}} ${{env.SOLUTION_FILE_PATH}} /t:${{env.PROJECT_MAIN}}
-        
+      
+    - name: Create Hash
+      run: (Get-FileHash Release/MobiFlightConnector-${{ github.event.release.tag_name }}.zip -Algorithm SHA1).Hash | Out-File MobiFlightConnector-${{ github.event.release.tag_name }}.sha1 
+      shell: pwsh
+      
     - name: Release
       uses: softprops/action-gh-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        files: Release/*.zip
+        files: 
+          Release/*.zip
+          Release/*.sha1
         
-    - uses: MCJack123/ghaction-generate-release-hashes@v3
-      with:
-        hash-type: sha1
-        file-name: hashes.txt
-        get-assets: true
+    
         
-    - uses: actions/upload-artifact@v2
-      with:
-        name: Asset Hashes
-        path: hashes.txt
+    
 
