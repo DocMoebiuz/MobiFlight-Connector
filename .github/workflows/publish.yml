@@ -24,7 +24,7 @@ jobs:
     - name: Downgrade NSIS
       shell: pwsh
       run: |
-        Build\get_nsis.ps1
+        .\Build\get_nsis.ps1
     
     - uses: actions/checkout@v3
 
