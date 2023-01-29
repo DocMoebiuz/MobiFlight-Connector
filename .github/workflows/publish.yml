@@ -60,6 +60,9 @@ jobs:
       run: (Get-FileHash Release/MobiFlightConnector-${{ github.event.release.tag_name }}.zip -Algorithm SHA1).Hash | Out-File Release/MobiFlightConnector-${{ github.event.release.tag_name }}.sha1 
       shell: pwsh
       
+    - run: choco uninstall nsis
+    - run: choco install nsis --version 3.04
+      
     - name: Create setup exe
       uses: joncloud/makensis-action@v4
       with:
