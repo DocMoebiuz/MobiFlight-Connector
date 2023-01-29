@@ -21,7 +21,10 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - run: choco install nsis.install --version 3.04
+    - name: Downgrade NSIS
+      shell: pwsh
+      run: |
+        Build\get_nsis.ps1
     
     - uses: actions/checkout@v3
 
