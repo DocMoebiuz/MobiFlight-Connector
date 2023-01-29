@@ -21,6 +21,8 @@ jobs:
     runs-on: windows-latest
 
     steps:
+    - run: choco install nsis.install --version 3.04
+    
     - uses: actions/checkout@v3
 
     - name: Add MSBuild to PATH
@@ -59,9 +61,7 @@ jobs:
     - name: Create Hash
       run: (Get-FileHash Release/MobiFlightConnector-${{ github.event.release.tag_name }}.zip -Algorithm SHA1).Hash | Out-File Release/MobiFlightConnector-${{ github.event.release.tag_name }}.sha1 
       shell: pwsh
-      
-    - run: choco install nsis --version 3.04
-      
+
     - name: Create setup exe
       uses: joncloud/makensis-action@v4
       with:
