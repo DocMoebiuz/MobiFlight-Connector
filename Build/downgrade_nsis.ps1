@@ -5,7 +5,9 @@
 
 $NsisVersion = "3.04"
 
-Get-Help Install-Binary
+Get-Help Install-Binary -Examples
+Get-Help Install-Binary -Detailed
+Get-Help Install-Binary -Full
 
 Install-Binary -Url "https://downloads.sourceforge.net/project/nsis/NSIS%203/${NsisVersion}/nsis-${NsisVersion}-setup.exe" -Name "nsis-${NsisVersion}-setup.exe" -ArgumentList ('/S')
 
