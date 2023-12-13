@@ -2,6 +2,15 @@
 ##  File:  Install-NSIS.ps1
 ##  Desc:  Install NSIS
 ################################################################################
+function Set-MachinePath{
+    [CmdletBinding()]
+    param(
+        [string]$NewPath
+    )
+    Set-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name Path -Value $NewPath
+    return $NewPath
+}
+
 function Add-MachinePathItem
 {
     [CmdletBinding()]
