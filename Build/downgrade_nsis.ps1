@@ -2,6 +2,26 @@
 ##  File:  Install-NSIS.ps1
 ##  Desc:  Install NSIS
 ################################################################################
+function Add-MachinePathItem
+{
+    [CmdletBinding()]
+    param(
+        [string]$PathItem
+    )
+
+    $currentPath = Get-MachinePath
+    $newPath = $PathItem + ';' + $currentPath
+    return Set-MachinePath -NewPath $newPath
+}
+
+function Get-MachinePath{
+    [CmdletBinding()]
+    param(
+
+    )
+    $currentPath = (Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH).Path
+    return $currentPath
+}
 
 $NsisVersion = "3.04"
 # Get-Help Install-Binary -Full
