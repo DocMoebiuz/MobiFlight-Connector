@@ -1,4 +1,4 @@
-name: Add artifact links to pull request
+name: Add artifact links to PR
 on:
   workflow_run:
     workflows: [RunTests]
