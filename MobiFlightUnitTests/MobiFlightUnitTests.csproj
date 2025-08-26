@@ -127,6 +127,7 @@
     <Compile Include="MobiFlight\BrowserMessages\MessageTests.cs" />
     <Compile Include="MobiFlight\ExecutionManagerTests.cs" />
     <Compile Include="MobiFlight\Execution\ConfigItemExecutorTests.cs" />
+    <Compile Include="MobiFlight\FliteSimProtocolTests.cs" />
     <Compile Include="MobiFlight\Joysticks\JoystickDefinitionTests.cs" />
     <Compile Include="MobiFlight\JsonDefinitionFilesTests.cs" />
     <Compile Include="MobiFlight\MidiBoard\MidiBoardDefinitionTests.cs" />
@@ -155,6 +156,7 @@
     <Compile Include="MobiFlight\InputConfig\MSFS2020EventIdInputActionTests.cs" />
     <Compile Include="MobiFlight\InputConfig\VJoyInputActionTests.cs" />
     <Compile Include="MobiFlight\InputConfig\ProSimInputActionTests.cs" />
+    <Compile Include="MobiFlight\UdpInterfaceTests.cs" />
     <Compile Include="ProSim\ProSimSourceTests.cs" />
     <Compile Include="ProSim\ProSimSerializationIntegrationTests.cs" />
     <Compile Include="MobiFlight\LedModuleStateTests.cs" />

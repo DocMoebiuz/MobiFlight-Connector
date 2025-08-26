@@ -23,17 +23,17 @@ namespace MobiFlight
         public event EventHandler OnDisconnected;
 
         protected List<JoystickDevice> Buttons = new List<JoystickDevice>();
-        private readonly List<JoystickDevice> Axes = new List<JoystickDevice>();
-        private readonly List<JoystickDevice> POV = new List<JoystickDevice>();
-        private readonly List<JoystickOutputDevice> Lights = new List<JoystickOutputDevice>();
+        protected readonly List<JoystickDevice> Axes = new List<JoystickDevice>();
+        protected readonly List<JoystickDevice> POV = new List<JoystickDevice>();
+        protected readonly List<JoystickOutputDevice> Lights = new List<JoystickOutputDevice>();
 
         protected readonly SharpDX.DirectInput.Joystick DIJoystick;
-        private readonly JoystickDefinition Definition;
+        protected readonly JoystickDefinition Definition;
 
         private HidDevice Device;
         protected bool RequiresOutputUpdate = false;
         private object StateLock = new object();
-        private JoystickState State = null;
+        protected JoystickState State = null;
         private HidStream Stream;
 
         private static readonly Dictionary<int, string> UsageMap = new Dictionary<int, string>
@@ -64,11 +64,11 @@ namespace MobiFlight
             return (serial != null && serial.Contains(SerialPrefix));
         }
 
-        public string Name { 
+        public virtual string Name { 
             get { return DIJoystick?.Information.InstanceName; }  
         }
 
-        public string Serial
+        public virtual string Serial
         {
             get { return SerialPrefix + DIJoystick.Information.InstanceGuid;  }
         }
@@ -463,7 +463,7 @@ namespace MobiFlight
             return UsageMap[usage];
         }
 
-        public virtual void SetOutputDeviceState(string name, byte state)
+        protected virtual void SetOutputDeviceState(string name, byte state)
         {
             foreach(var light in Lights)
             {
@@ -474,6 +474,16 @@ namespace MobiFlight
                 RequiresOutputUpdate = true;
                 return;
             }
+        }
+
+        public virtual void SetOutputDeviceState(string name, float value)
+        {
+            // Default implementation: convert float to byte (0.0-1.0 → 0-255) and delegate to byte method
+            // ExecutionManager should use this method for consistency
+            // Individual joystick implementations can override this for native float handling
+            float clampedValue = Math.Max(0f, Math.Min(value, 1f)); // Clamp to 0.0-1.0 range
+            byte byteValue = (byte)Math.Round(clampedValue * 255f);
+            SetOutputDeviceState(name, byteValue);
         }
 
         public virtual void SetLcdDisplay(string address, string value)
@@ -497,11 +507,10 @@ namespace MobiFlight
                 return;
             }
 
-            if (!RequiresOutputUpdate) return;
             if (Stream == null)
             {
                 Connect();
-            };
+            }
             Stream.SetFeature(data);
 
             RequiresOutputUpdate = false;
@@ -509,6 +518,9 @@ namespace MobiFlight
 
         public virtual void UpdateOutputDeviceStates()
         {
+            // Check if update is needed before doing any processing
+            if (!RequiresOutputUpdate) return;
+
             var data = new byte[] { 0, 0, 0, 0, 0 };
 
             foreach (var light in Lights)
