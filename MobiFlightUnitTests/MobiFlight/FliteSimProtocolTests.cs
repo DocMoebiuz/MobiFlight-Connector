@@ -246,8 +246,8 @@ namespace MobiFlight
             CompleteHandshake();
             _sentPackets.Clear(); // Clear handshake packets
             
-            var flightData = new float[30];
-            for (int i = 0; i < 30; i++)
+            var flightData = new float[43];
+            for (int i = 0; i < 43; i++)
             {
                 flightData[i] = i * 0.1f;
             }
@@ -259,11 +259,11 @@ namespace MobiFlight
             _mockUdp.Verify(x => x.Send(It.IsAny<byte[]>()), Times.Once);
             Assert.AreEqual(1, _sentPackets.Count);
             var sentBytes = _sentPackets[0];
-            Assert.AreEqual(120, sentBytes.Length); // 30 floats * 4 bytes
+            Assert.AreEqual(172, sentBytes.Length); // 43 floats * 4 bytes
 
             var parsedData = ParseFloats(sentBytes);
-            Assert.AreEqual(30, parsedData.Length);
-            for (int i = 0; i < 30; i++)
+            Assert.AreEqual(43, parsedData.Length);
+            for (int i = 0; i < 43; i++)
             {
                 Assert.AreEqual(flightData[i], parsedData[i], 0.001f);
             }
@@ -288,7 +288,7 @@ namespace MobiFlight
             // Arrange
             CompleteHandshake();
             _sentPackets.Clear();
-            var invalidData = new float[25]; // Wrong size
+            var invalidData = new float[30]; // Wrong size - should be 43
 
             // Act
             _protocol.SendFlightData(invalidData);
